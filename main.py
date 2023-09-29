@@ -15,8 +15,7 @@ WIN_HEIGHT = 816
 WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 pygame.display.set_caption("Tanks")
-pygame.display.set_icon(pygame.image.load(
-    os.path.join("icon", "icon.png")).convert_alpha())
+pygame.display.set_icon(pygame.image.load(os.path.join("icon", "icon.png")).convert_alpha())
 pygame.mouse.set_visible(False)
 
 # player colour
@@ -48,58 +47,28 @@ collision_tile_group = pygame.sprite.Group()
 backgound_tile_group = pygame.sprite.Group()
 partical_list = []
 
-FONT_1 = pygame.font.Font(
-    os.path.join("font", "comic_sans.ttf"), 42)
+FONT_1 = pygame.font.Font(os.path.join("font", "comic_sans.ttf"), 42)
 
 pygame.mixer.set_num_channels(128)
-load_level_sound = pygame.mixer.Sound(
-    os.path.join("sounds", "load_level.wav"))
-explosion_sound = pygame.mixer.Sound(
-    os.path.join("sounds", "explosion.wav"))
-shoot_sound_1 = pygame.mixer.Sound(
-    os.path.join("sounds", "shoot_1.wav"))
-shoot_sound_2 = pygame.mixer.Sound(
-    os.path.join("sounds", "shoot_2.wav"))
-shoot_sound_3 = pygame.mixer.Sound(
-    os.path.join("sounds", "shoot_3.wav"))
-shoot_sound_list = [
-    shoot_sound_1,
-    shoot_sound_2,
-    shoot_sound_3]
-bounce_sound_1 = pygame.mixer.Sound(
-    os.path.join("sounds", "bounce_1.wav"))
-bounce_sound_2 = pygame.mixer.Sound(
-    os.path.join("sounds", "bounce_2.wav"))
-bounce_sound_3 = pygame.mixer.Sound(
-    os.path.join("sounds", "bounce_3.wav"))
-bounce_sound_list = [
-    bounce_sound_1,
-    bounce_sound_2,
-    bounce_sound_3]
-bullet_explosion_sound_1 = pygame.mixer.Sound(
-    os.path.join("sounds", "bullet_explosion_1.wav"))
-bullet_explosion_sound_2 = pygame.mixer.Sound(
-    os.path.join("sounds", "bullet_explosion_2.wav"))
-bullet_explosion_sound_3 = pygame.mixer.Sound(
-    os.path.join("sounds", "bullet_explosion_3.wav"))
-bullet_explosion_list = [
-    bullet_explosion_sound_1,
-    bullet_explosion_sound_2,
-    bullet_explosion_sound_3]
+load_level_sound = pygame.mixer.Sound(os.path.join("sounds", "load_level.wav"))
+explosion_sound = pygame.mixer.Sound(os.path.join("sounds", "explosion.wav"))
+shoot_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "shoot_1.wav"))
+shoot_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "shoot_2.wav"))
+shoot_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "shoot_3.wav"))
+shoot_sound_list = [shoot_sound_1, shoot_sound_2, shoot_sound_3]
+bounce_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bounce_1.wav"))
+bounce_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bounce_2.wav"))
+bounce_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bounce_3.wav"))
+bounce_sound_list = [bounce_sound_1, bounce_sound_2, bounce_sound_3]
+bullet_explosion_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_1.wav"))
+bullet_explosion_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_2.wav"))
+bullet_explosion_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_3.wav"))
+bullet_explosion_list = [bullet_explosion_sound_1, bullet_explosion_sound_2, bullet_explosion_sound_3]
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(
-            self,
-            colour,
-            size,
-            speed,
-            shoot_delay,
-            bullet_colour,
-            bullet_speed,
-            bullet_max_bounces,
-            bullet_size,
-            pos_x, pos_y):
+    def __init__(self, colour, size, speed, shoot_delay, bullet_colour, bullet_speed,
+                 bullet_max_bounces, bullet_size, pos_x, pos_y):
         super().__init__()
         self.colour = colour
         self.speed = speed
@@ -114,9 +83,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(colour)
         self.rect = self.image.get_rect(topleft=(pos_x, pos_y))
         self.direction = pygame.math.Vector2(0, 0)
-        self.rect_pos = pygame.math.Vector2(
-            self.rect.x,
-            self.rect.y)
+        self.rect_pos = pygame.math.Vector2(self.rect.x, self.rect.y)
         self.shoot_timer = self.shoot_delay
 
     def horizontal_movement(self, delta_time):
@@ -185,18 +152,8 @@ class Player(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(
-            self,
-            colour,
-            size,
-            speed,
-            shoot_delay,
-            bullet_colour,
-            bullet_speed,
-            bullet_max_bounces,
-            bullet_size,
-            pos_x,
-            pos_y):
+    def __init__(self, colour, size, speed, shoot_delay, bullet_colour, bullet_speed,
+                 bullet_max_bounces, bullet_size, pos_x, pos_y):
         super().__init__()
         self.colour = colour
         self.speed = speed
@@ -262,16 +219,8 @@ class Enemy(pygame.sprite.Sprite):
         if self.shoot_timer < 0:
             random.choice(shoot_sound_list).play()
             for sprite in player_group.sprites():
-                enemy_bullet_group.add(Bullet(
-                    self.bullet_colour,
-                    self.bullet_speed,
-                    self.bullet_max_bounces,
-                    self.bullet_size,
-                    self.rect.center,
-                    (sprite.rect.center[0] +
-                     random.randint(-100, 100),
-                     sprite.rect.center[1] +
-                     random.randint(-100, 100))))
+                enemy_bullet_group.add(Bullet(self.bullet_colour, self.bullet_speed, self.bullet_max_bounces, self.bullet_size, self.rect.center,
+                                              (sprite.rect.center[0] + random.randint(-100, 100), sprite.rect.center[1] + random.randint(-100, 100))))
             self.shoot_timer = self.shoot_delay
 
     def update(self, delta_time):
@@ -284,14 +233,7 @@ class Enemy(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(
-            self,
-            bullet_colour,
-            bullet_speed,
-            bullet_max_bounces,
-            bullet_size,
-            start_pos,
-            target_pos):
+    def __init__(self, bullet_colour, bullet_speed, bullet_max_bounces, bullet_size, start_pos, target_pos):
         super().__init__()
         self.bullet_colour = bullet_colour
         self.bullet_speed = bullet_speed
@@ -307,9 +249,7 @@ class Bullet(pygame.sprite.Sprite):
         self.angle = math.atan2(self.rise, self.run)
         self.delta_y = math.sin(self.angle) * self.bullet_speed
         self.delta_x = math.cos(self.angle) * self.bullet_speed
-        self.rect_pos = pygame.math.Vector2(
-            self.rect.x,
-            self.rect.y)
+        self.rect_pos = pygame.math.Vector2(self.rect.x, self.rect.y)
         self.bounce_index = 0
 
     def movement(self, delta_time):
@@ -326,28 +266,17 @@ class Bullet(pygame.sprite.Sprite):
                 top = abs(self.rect.bottom - sprite.rect.top)
                 bottom = abs(self.rect.top - sprite.rect.bottom)
 
-                if (left < right and
-                    left < top and
-                    left < bottom and
+                if (left < right and left < top and left < bottom and
                         self.delta_x > 0):
                     self.delta_x *= -1
                     self.bounce_index += 1
-                elif (right < left and
-                      right < top and
-                      right < bottom
-                      and self.delta_x < 0):
+                elif (right < left and right < top and right < bottom and self.delta_x < 0):
                     self.delta_x *= -1
                     self.bounce_index += 1
-                elif (top < left and
-                      top < right and
-                      top < bottom and
-                      self.delta_y > 0):
+                elif (top < left and top < right and top < bottom and self.delta_y > 0):
                     self.delta_y *= -1
                     self.bounce_index += 1
-                elif (bottom < left and
-                      bottom < right and
-                      bottom < top and
-                      self.delta_y < 0):
+                elif (bottom < left and bottom < right and bottom < top and self.delta_y < 0):
                     self.delta_y *= -1
                     self.bounce_index += 1
 
@@ -357,18 +286,9 @@ class Bullet(pygame.sprite.Sprite):
                 random.choice(bounce_sound_list).play()
 
                 for _ in range(50):
-                    partical_list.append(Partical(
-                        LIGHT_GRAY,
-                        random.randint(
-                            self.width / 2,
-                            self.width * 2),
-                        random.randint(90, 180),
-                        random.randint(-180, 180),
-                        random.randint(-180, 180),
-                        (self.rect.x + self.width / 2 +
-                         random.randint(-4, 4)),
-                        (self.rect.y + self.height / 2 +
-                         random.randint(-4, 4))))
+                    partical_list.append(Partical(LIGHT_GRAY, random.randint(self.width / 2, self.width * 2), random.randint(90, 180),
+                                                  random.randint(-180, 180), random.randint(-180, 180), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
+                                                  (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
     def explode_bullet(self):
         if self.bounce_index > self.max_bounces:
@@ -376,26 +296,14 @@ class Bullet(pygame.sprite.Sprite):
             Bullet.kill(self)
 
             for _ in range(50):
-                partical_list.append(Partical(
-                    ORANGE,
-                    random.randint(self.width, self.width * 2),
-                    random.randint(60, 120),
-                    random.randint(-250, 250),
-                    random.randint(-250, 250),
-                    (self.rect.x + self.width / 2 +
-                     random.randint(-4, 4)),
-                    (self.rect.y + self.height / 2 +
-                     random.randint(-4, 4))))
+                partical_list.append(Partical(ORANGE, random.randint(self.width, self.width * 2), random.randint(60, 120), random.randint(-250, 250),
+                                              random.randint(-250, 250), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
+                                              (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
     def draw(self):
-        partical_list.append(Partical(
-            self.bullet_colour,
-            self.width / 1.8,
-            random.randint(25, 65),
-            random.randint(-30, 30),
-            random.randint(-30, 30),
-            self.rect_pos.x + self.width / 2 + random.randint(-4, 4),
-            self.rect_pos.y + self.height / 2 + random.randint(-4, 4)))
+        partical_list.append(Partical(self.bullet_colour, self.width / 1.8, random.randint(25, 65), random.randint(-30, 30),
+                                      random.randint(-30, 30), self.rect_pos.x + self.width / 2 + random.randint(-4, 4),
+                                      self.rect_pos.y + self.height / 2 + random.randint(-4, 4)))
 
     def update(self, delta_time):
         self.movement(delta_time)
@@ -415,15 +323,7 @@ class Tile(pygame.sprite.Sprite):
 
 
 class Partical():
-    def __init__(
-            self,
-            colour,
-            radius,
-            srink_speed,
-            x_vel,
-            y_vel,
-            x_pos,
-            y_pos):
+    def __init__(self, colour, radius, srink_speed, x_vel, y_vel, x_pos, y_pos):
         self.colour = colour
         self.radius = radius
         self.srink_speed = srink_speed
@@ -444,11 +344,7 @@ class Partical():
             partical_list.remove(self)
 
     def draw(self):
-        pygame.draw.circle(
-            WIN,
-            self.colour,
-            (self.x_pos, self.y_pos),
-            self.radius)
+        pygame.draw.circle(WIN, self.colour, (self.x_pos, self.y_pos), self.radius)
 
     def update(self, delta_time):
         self.move(delta_time)
@@ -462,20 +358,10 @@ class Game():
         self.game_active = False
         self.white_colour_list = [WHITE_1, WHITE_2]
         self.gray_colour_list = [GRAY_1, GRAY_2]
-        self.start_text = FONT_1.render(
-            "Press Space To Start",
-            True,
-            BLACK)
-        self.start_text_rect = self.start_text.get_rect(center=(
-            WIN_WIDTH / 2,
-            0))
-        self.level_text = FONT_1.render(
-            f"Level Menu",
-            True,
-            BLACK)
-        self.level_text_rect = self.level_text.get_rect(center=(
-            WIN_WIDTH / 2,
-            24))
+        self.start_text = FONT_1.render("Press Space To Start", True, BLACK)
+        self.start_text_rect = self.start_text.get_rect(center=(WIN_WIDTH / 2, 0))
+        self.level_text = FONT_1.render(f"Level Menu", True, BLACK)
+        self.level_text_rect = self.level_text.get_rect(center=(WIN_WIDTH / 2, 24))
 
     def level_setup(self, level_data):
         for collom_index, row in enumerate(level_data):
@@ -490,32 +376,25 @@ class Game():
                     tile = Tile(self.gray_colour_list, x, y)
                     collision_tile_group.add(tile)
                 elif char == "U":
-                    player = Player(
-                        BLUE, 48, 120, 0.25, BLUE, 260, 1, 16, x, y)
+                    player = Player(BLUE, 48, 120, 0.25, BLUE, 260, 1, 16, x, y)
                     player_group.add(player)
                 elif char == "L":
-                    enemy = Enemy(
-                        LIGHT_BROWN, 48, 0, 1.8, LIGHT_BROWN, 260, 1, 16, x, y)
+                    enemy = Enemy(LIGHT_BROWN, 48, 0, 1.8, LIGHT_BROWN, 260, 1, 16, x, y)
                     enemy_group.add(enemy)
                 elif char == "G":
-                    enemy = Enemy(
-                        GREEN, 48, 120, 1, GREEN, 260, 1, 16, x, y)
+                    enemy = Enemy(GREEN, 48, 120, 1, GREEN, 260, 1, 16, x, y)
                     enemy_group.add(enemy)
                 elif char == "Y":
-                    enemy = Enemy(
-                        YELLOW, 48, 120, 1, YELLOW, 520, 0, 16, x, y)
+                    enemy = Enemy(YELLOW, 48, 120, 1, YELLOW, 520, 0, 16, x, y)
                     enemy_group.add(enemy)
                 elif char == "P":
-                    enemy = Enemy(
-                        PURPLE, 48, 60, 0.25, PURPLE, 260, 1, 16, x, y)
+                    enemy = Enemy(PURPLE, 48, 60, 0.25, PURPLE, 260, 1, 16, x, y)
                     enemy_group.add(enemy)
                 elif char == "R":
-                    enemy = Enemy(
-                        RED, 48, 0, 0.8, RED, 780, 3, 16, x, y)
+                    enemy = Enemy(RED, 48, 0, 0.8, RED, 780, 3, 16, x, y)
                     enemy_group.add(enemy)
                 elif char == "W":
-                    enemy = Enemy(
-                        WHITE_1, 48, 240, 0.35, WHITE_1, 780, 1, 16, x, y)
+                    enemy = Enemy(WHITE_1, 48, 240, 0.35, WHITE_1, 780, 1, 16, x, y)
                     enemy_group.add(enemy)
 
     def level_clear(self):
@@ -572,36 +451,14 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(
-                                round(sprite_1.width / 2),
-                                round(sprite_1.width * 2)),
-                            random.randint(90, 180),
-                            random.randint(-180, 180),
-                            random.randint(-180, 180),
-                            (sprite_1.rect.x +
-                             sprite_1.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_1.rect.y +
-                             sprite_1.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                                                      random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
+                                                      (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(
-                                round(sprite_2.width / 2),
-                                round(sprite_2.width * 2)),
-                            random.randint(90, 180),
-                            random.randint(-180, 180),
-                            random.randint(-180, 180),
-                            (sprite_2.rect.x +
-                             sprite_2.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_2.rect.y +
-                             sprite_2.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)),
+                                                      random.randint(90, 180), random.randint(-180, 180), random.randint(-180, 180),
+                                                      (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)), (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
                     return
 
     def player_enemy_bullet_collision(self):
@@ -613,36 +470,14 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(
-                                round(sprite_1.width / 2),
-                                round(sprite_1.width * 2)),
-                            random.randint(90, 180),
-                            random.randint(-180, 180),
-                            random.randint(-180, 180),
-                            (sprite_1.rect.x +
-                             sprite_1.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_1.rect.y +
-                             sprite_1.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                                                      random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
+                                                      (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(
-                                round(sprite_2.width / 2),
-                                round(sprite_2.width * 2)),
-                            random.randint(90, 180),
-                            random.randint(-180, 180),
-                            random.randint(-180, 180),
-                            (sprite_2.rect.x +
-                             sprite_2.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_2.rect.y +
-                             sprite_2.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)), random.randint(90, 180),
+                                                      random.randint(-180, 180), random.randint(-180, 180), (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)),
+                                                      (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
 
     def bullet_enemy_collision(self):
         for sprite_1 in player_bullet_group.sprites():
@@ -653,16 +488,9 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(sprite_1.width, sprite_1.width * 2),
-                            random.randint(40, 90),
-                            random.randint(-500, 500),
-                            random.randint(-500, 500),
-                            (sprite_1.rect.x + sprite_1.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_1.rect.y + sprite_1.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                                                      random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
+                                                      (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
     def bullet_player_collision(self):
         for sprite_1 in enemy_bullet_group.sprites():
@@ -673,16 +501,9 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(
-                            ORANGE,
-                            random.randint(sprite_1.width, sprite_1.width * 2),
-                            random.randint(40, 90),
-                            random.randint(-500, 500),
-                            random.randint(-500, 500),
-                            (sprite_1.rect.x + sprite_1.width / 2 +
-                             random.randint(-4, 4)),
-                            (sprite_1.rect.y + sprite_1.height / 2 +
-                             random.randint(-4, 4))))
+                        partical_list.append(Partical(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                                                      random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
+                                                      (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
     def pointer_update(self):
         for sprite in player_group.sprites():
@@ -695,78 +516,27 @@ class Game():
             self.delta_x = math.cos(self.angle)
 
     def pointer_draw(self):
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 8,
-                self.mouse_y + self.delta_y - self.rise / 8),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 4,
-                self.mouse_y + self.delta_y - self.rise / 4),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 2.66,
-                self.mouse_y + self.delta_y - self.rise / 2.66),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 2,
-                self.mouse_y + self.delta_y - self.rise / 2),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 1.62,
-                self.mouse_y + self.delta_y - self.rise / 1.62),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 1.36,
-                self.mouse_y + self.delta_y - self.rise / 1.36),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            (self.mouse_x + self.delta_x - self.run / 1.16,
-                self.mouse_y + self.delta_y - self.rise / 1.16),
-            8)
-        pygame.draw.circle(
-            WIN,
-            BLUE,
-            pygame.mouse.get_pos(),
-            8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 8, self.mouse_y + self.delta_y - self.rise / 8), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 4, self.mouse_y + self.delta_y - self.rise / 4), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 2.66, self.mouse_y + self.delta_y - self.rise / 2.66), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 2, self.mouse_y + self.delta_y - self.rise / 2), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 1.62, self.mouse_y + self.delta_y - self.rise / 1.62), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 1.36, self.mouse_y + self.delta_y - self.rise / 1.36), 8)
+        pygame.draw.circle(WIN, BLUE, (self.mouse_x + self.delta_x - self.run / 1.16, self.mouse_y + self.delta_y - self.rise / 1.16), 8)
+        pygame.draw.circle(WIN, BLUE, pygame.mouse.get_pos(), 8)
 
     def text_update(self):
         if self.game_active:
-            self.level_text = FONT_1.render(
-                f"Level {self.current_level}",
-                True,
-                BLACK)
+            self.level_text = FONT_1.render(f"Level {self.current_level}", True, BLACK)
         elif not self.game_active and self.current_level == 11:
-            self.level_text = FONT_1.render(
-                f"Level Sucessfull",
-                True,
-                BLACK)
+            self.level_text = FONT_1.render(f"Level Sucessfull", True, BLACK)
         elif not self.game_active:
-            self.level_text = FONT_1.render(
-                f"Level Menu",
-                True,
-                BLACK)
+            self.level_text = FONT_1.render(f"Level Menu", True, BLACK)
 
-        self.level_text_rect = self.level_text.get_rect(center=(
-            WIN_WIDTH / 2,
-            24))
+        self.level_text_rect = self.level_text.get_rect(center=(WIN_WIDTH / 2, 24))
 
         if not self.game_active:
-            self.start_text_rect.y = round(
-                math.sin(time.time() * 2.5) * 50 + 616)
+            self.start_text_rect.y = round(math.sin(time.time() * 2.5) * 50 + 616)
 
     def text_draw(self):
         WIN.blit(self.level_text, self.level_text_rect)
