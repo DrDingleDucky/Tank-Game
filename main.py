@@ -35,7 +35,7 @@ LIGHT_GRAY = (128, 128, 128)
 
 # background colours
 WHITE_1 = (255, 255, 255)
-WHITE_2 = (247, 247, 247)
+WHITE_2 = (231, 231, 231)
 GRAY_1 = (32, 32, 32)
 GRAY_2 = (40, 40, 40)
 
@@ -44,25 +44,25 @@ enemy_group = pygame.sprite.Group()
 player_bullet_group = pygame.sprite.Group()
 enemy_bullet_group = pygame.sprite.Group()
 collision_tile_group = pygame.sprite.Group()
-backgound_tile_group = pygame.sprite.Group()
-partical_list = []
+background_tile_group = pygame.sprite.Group()
+partial_list = []
 
-FONT_1 = pygame.font.Font(os.path.join("font", "comic_sans.ttf"), 42)
+FONT_1 = pygame.font.Font(os.path.join("font", "comic-sans.ttf"), 42)
 
 pygame.mixer.set_num_channels(128)
-load_level_sound = pygame.mixer.Sound(os.path.join("sounds", "load_level.wav"))
+load_level_sound = pygame.mixer.Sound(os.path.join("sounds", "load-level.wav"))
 explosion_sound = pygame.mixer.Sound(os.path.join("sounds", "explosion.wav"))
-shoot_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "shoot_1.wav"))
-shoot_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "shoot_2.wav"))
-shoot_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "shoot_3.wav"))
+shoot_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "shoot-1.wav"))
+shoot_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "shoot-2.wav"))
+shoot_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "shoot-3.wav"))
 shoot_sound_list = [shoot_sound_1, shoot_sound_2, shoot_sound_3]
-bounce_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bounce_1.wav"))
-bounce_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bounce_2.wav"))
-bounce_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bounce_3.wav"))
+bounce_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bounce-1.wav"))
+bounce_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bounce-2.wav"))
+bounce_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bounce-3.wav"))
 bounce_sound_list = [bounce_sound_1, bounce_sound_2, bounce_sound_3]
-bullet_explosion_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_1.wav"))
-bullet_explosion_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_2.wav"))
-bullet_explosion_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bullet_explosion_3.wav"))
+bullet_explosion_sound_1 = pygame.mixer.Sound(os.path.join("sounds", "bullet-explosion-1.wav"))
+bullet_explosion_sound_2 = pygame.mixer.Sound(os.path.join("sounds", "bullet-explosion-2.wav"))
+bullet_explosion_sound_3 = pygame.mixer.Sound(os.path.join("sounds", "bullet-explosion-3.wav"))
 bullet_explosion_list = [bullet_explosion_sound_1, bullet_explosion_sound_2, bullet_explosion_sound_3]
 
 
@@ -286,7 +286,7 @@ class Bullet(pygame.sprite.Sprite):
                 random.choice(bounce_sound_list).play()
 
                 for _ in range(50):
-                    partical_list.append(Partical(LIGHT_GRAY, random.randint(self.width / 2, self.width * 2), random.randint(90, 180),
+                    partial_list.append(Partial(LIGHT_GRAY, random.randint(int(self.width / 2), self.width * 2), random.randint(90, 180),
                                                   random.randint(-180, 180), random.randint(-180, 180), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
                                                   (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
@@ -296,12 +296,12 @@ class Bullet(pygame.sprite.Sprite):
             Bullet.kill(self)
 
             for _ in range(50):
-                partical_list.append(Partical(ORANGE, random.randint(self.width, self.width * 2), random.randint(60, 120), random.randint(-250, 250),
+                partial_list.append(Partial(ORANGE, random.randint(self.width, self.width * 2), random.randint(60, 120), random.randint(-250, 250),
                                               random.randint(-250, 250), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
                                               (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
     def draw(self):
-        partical_list.append(Partical(self.bullet_colour, self.width / 1.8, random.randint(25, 65), random.randint(-30, 30),
+        partial_list.append(Partial(self.bullet_colour, self.width / 1.8, random.randint(25, 65), random.randint(-30, 30),
                                       random.randint(-30, 30), self.rect_pos.x + self.width / 2 + random.randint(-4, 4),
                                       self.rect_pos.y + self.height / 2 + random.randint(-4, 4)))
 
@@ -322,11 +322,11 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(pos_x, pos_y))
 
 
-class Partical():
-    def __init__(self, colour, radius, srink_speed, x_vel, y_vel, x_pos, y_pos):
+class Partial():
+    def __init__(self, colour, radius, shrink_speed, x_vel, y_vel, x_pos, y_pos):
         self.colour = colour
         self.radius = radius
-        self.srink_speed = srink_speed
+        self.shrink_speed = shrink_speed
         self.x_vel = x_vel
         self.y_vel = y_vel
         self.x_pos = x_pos
@@ -337,11 +337,11 @@ class Partical():
         self.y_pos += self.y_vel * delta_time
 
     def scale(self, delta_time):
-        self.radius -= self.srink_speed * delta_time
+        self.radius -= self.shrink_speed * delta_time
 
     def remove(self):
         if self.radius < 0:
-            partical_list.remove(self)
+            partial_list.remove(self)
 
     def draw(self):
         pygame.draw.circle(WIN, self.colour, (self.x_pos, self.y_pos), self.radius)
@@ -364,14 +364,14 @@ class Game():
         self.level_text_rect = self.level_text.get_rect(center=(WIN_WIDTH / 2, 24))
 
     def level_setup(self, level_data):
-        for collom_index, row in enumerate(level_data):
+        for column_index, row in enumerate(level_data):
             for row_index, char in enumerate(row):
                 x = row_index * 48
-                y = collom_index * 48
+                y = column_index * 48
 
                 if char == " ":
                     tile = Tile(self.white_colour_list, x, y)
-                    backgound_tile_group.add(tile)
+                    background_tile_group.add(tile)
                 elif char == "T":
                     tile = Tile(self.gray_colour_list, x, y)
                     collision_tile_group.add(tile)
@@ -403,7 +403,7 @@ class Game():
         player_bullet_group.empty()
         enemy_bullet_group.empty()
         collision_tile_group.empty()
-        backgound_tile_group.empty()
+        background_tile_group.empty()
 
     def level_update(self):
         if not self.game_active:
@@ -416,7 +416,7 @@ class Game():
             load_level_sound.play()
 
             if self.current_level == 1:
-                self.level_setup(levels.level_10)
+                self.level_setup(levels.level_1)
             elif self.current_level == 2:
                 self.level_setup(levels.level_2)
             elif self.current_level == 3:
@@ -436,7 +436,7 @@ class Game():
             elif self.current_level == 10:
                 self.level_setup(levels.level_10)
             elif self.current_level == 11:
-                self.level_setup(levels.level_sucessfull)
+                self.level_setup(levels.level_successful)
                 self.game_active = False
         elif len(player_group) == 0:
             self.level_clear()
@@ -451,12 +451,12 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)),
+                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)),
                                                       random.randint(90, 180), random.randint(-180, 180), random.randint(-180, 180),
                                                       (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)), (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
                     return
@@ -470,12 +470,12 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)), random.randint(90, 180),
+                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)),
                                                       (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
 
@@ -488,7 +488,7 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                        partial_list.append(Partial(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
                                                       random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
@@ -501,7 +501,7 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partical_list.append(Partical(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                        partial_list.append(Partial(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
                                                       random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
@@ -529,7 +529,7 @@ class Game():
         if self.game_active:
             self.level_text = FONT_1.render(f"Level {self.current_level}", True, BLACK)
         elif not self.game_active and self.current_level == 11:
-            self.level_text = FONT_1.render(f"Level Sucessfull", True, BLACK)
+            self.level_text = FONT_1.render(f"Level Successful", True, BLACK)
         elif not self.game_active:
             self.level_text = FONT_1.render(f"Level Menu", True, BLACK)
 
@@ -552,8 +552,8 @@ class Game():
         player_bullet_group.update(delta_time)
         enemy_bullet_group.update(delta_time)
 
-        for partical in partical_list:
-            partical.update(delta_time)
+        for partial in partial_list:
+            partial.update(delta_time)
 
         self.player_bullet_bullet_collisions()
         self.player_enemy_bullet_collision()
@@ -567,7 +567,7 @@ class Game():
     def draw(self):
         WIN.fill(WHITE_1)
         collision_tile_group.draw(WIN)
-        backgound_tile_group.draw(WIN)
+        background_tile_group.draw(WIN)
         player_group.draw(WIN)
         enemy_group.draw(WIN)
 
@@ -577,8 +577,8 @@ class Game():
         for sprite in enemy_bullet_group.sprites():
             sprite.draw()
 
-        for partical in partical_list:
-            partical.draw()
+        for partial in partial_list:
+            partial.draw()
 
         self.pointer_draw()
 
@@ -607,7 +607,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     if not game.game_active:
                         game.level_clear()
-                        partical_list.clear()
+                        partial_list.clear()
                         game.current_level = 0
                         game.game_active = True
 

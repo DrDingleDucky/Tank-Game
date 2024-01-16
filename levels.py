@@ -26,7 +26,7 @@ level_menu = [
     "T                       T",
     "TTTTTTTTTTTTTTTTTTTTTTTTT"]
 
-level_sucessfull = [
+level_successful = [
     "TTTTTTTTTTTTTTTTTTTTTTTTT",
     "T                       T",
     "T T   T TTT TTTTT TTTTT T",
