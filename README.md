@@ -2,7 +2,7 @@
 
 A tank game made with python.
 
-![tanks-in-action.png](README.assets/tanks-in-action.png)
+![tanks.gif](README.assets/tanks.gif)
 
 ## Install Dependencies
 
