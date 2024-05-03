@@ -45,7 +45,7 @@ player_bullet_group = pygame.sprite.Group()
 enemy_bullet_group = pygame.sprite.Group()
 collision_tile_group = pygame.sprite.Group()
 background_tile_group = pygame.sprite.Group()
-partial_list = []
+particle_list = []
 
 FONT_1 = pygame.font.Font(os.path.join("font", "comic-sans.ttf"), 42)
 
@@ -286,7 +286,7 @@ class Bullet(pygame.sprite.Sprite):
                 random.choice(bounce_sound_list).play()
 
                 for _ in range(50):
-                    partial_list.append(Partial(LIGHT_GRAY, random.randint(int(self.width / 2), self.width * 2), random.randint(90, 180),
+                    particle_list.append(Particle(LIGHT_GRAY, random.randint(int(self.width / 2), self.width * 2), random.randint(90, 180),
                                                   random.randint(-180, 180), random.randint(-180, 180), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
                                                   (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
@@ -296,12 +296,12 @@ class Bullet(pygame.sprite.Sprite):
             Bullet.kill(self)
 
             for _ in range(50):
-                partial_list.append(Partial(ORANGE, random.randint(self.width, self.width * 2), random.randint(60, 120), random.randint(-250, 250),
+                particle_list.append(Particle(ORANGE, random.randint(self.width, self.width * 2), random.randint(60, 120), random.randint(-250, 250),
                                               random.randint(-250, 250), (self.rect.x + self.width / 2 + random.randint(-4, 4)),
                                               (self.rect.y + self.height / 2 + random.randint(-4, 4))))
 
     def draw(self):
-        partial_list.append(Partial(self.bullet_colour, self.width / 1.8, random.randint(25, 65), random.randint(-30, 30),
+        particle_list.append(Particle(self.bullet_colour, self.width / 1.8, random.randint(25, 65), random.randint(-30, 30),
                                       random.randint(-30, 30), self.rect_pos.x + self.width / 2 + random.randint(-4, 4),
                                       self.rect_pos.y + self.height / 2 + random.randint(-4, 4)))
 
@@ -322,7 +322,7 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(pos_x, pos_y))
 
 
-class Partial():
+class Particle():
     def __init__(self, colour, radius, shrink_speed, x_vel, y_vel, x_pos, y_pos):
         self.colour = colour
         self.radius = radius
@@ -341,7 +341,7 @@ class Partial():
 
     def remove(self):
         if self.radius < 0:
-            partial_list.remove(self)
+            particle_list.remove(self)
 
     def draw(self):
         pygame.draw.circle(WIN, self.colour, (self.x_pos, self.y_pos), self.radius)
@@ -451,12 +451,12 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                        particle_list.append(Particle(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)),
+                        particle_list.append(Particle(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)),
                                                       random.randint(90, 180), random.randint(-180, 180), random.randint(-180, 180),
                                                       (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)), (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
                     return
@@ -470,12 +470,12 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
+                        particle_list.append(Particle(ORANGE, random.randint(round(sprite_1.width / 2), round(sprite_1.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)), random.randint(90, 180),
+                        particle_list.append(Particle(ORANGE, random.randint(round(sprite_2.width / 2), round(sprite_2.width * 2)), random.randint(90, 180),
                                                       random.randint(-180, 180), random.randint(-180, 180), (sprite_2.rect.x + sprite_2.width / 2 + random.randint(-4, 4)),
                                                       (sprite_2.rect.y + sprite_2.height / 2 + random.randint(-4, 4))))
 
@@ -488,7 +488,7 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                        particle_list.append(Particle(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
                                                       random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
@@ -501,7 +501,7 @@ class Game():
                     sprite_2.kill()
 
                     for _ in range(50):
-                        partial_list.append(Partial(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
+                        particle_list.append(Particle(ORANGE, random.randint(sprite_1.width, sprite_1.width * 2), random.randint(40, 90),
                                                       random.randint(-500, 500), random.randint(-500, 500), (sprite_1.rect.x + sprite_1.width / 2 + random.randint(-4, 4)),
                                                       (sprite_1.rect.y + sprite_1.height / 2 + random.randint(-4, 4))))
 
@@ -552,8 +552,8 @@ class Game():
         player_bullet_group.update(delta_time)
         enemy_bullet_group.update(delta_time)
 
-        for partial in partial_list:
-            partial.update(delta_time)
+        for particle in particle_list:
+            particle.update(delta_time)
 
         self.player_bullet_bullet_collisions()
         self.player_enemy_bullet_collision()
@@ -577,8 +577,8 @@ class Game():
         for sprite in enemy_bullet_group.sprites():
             sprite.draw()
 
-        for partial in partial_list:
-            partial.draw()
+        for particle in particle_list:
+            particle.draw()
 
         self.pointer_draw()
 
@@ -607,7 +607,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     if not game.game_active:
                         game.level_clear()
-                        partial_list.clear()
+                        particle_list.clear()
                         game.current_level = 0
                         game.game_active = True
 
